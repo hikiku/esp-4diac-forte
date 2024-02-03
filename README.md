@@ -1,6 +1,6 @@
-# 4diac FORTE Esp32 Component
+# ESP 4diac FORTE Component 
 
-- [4diac FORTE Esp32 Component](#4diac-forte-esp32-component)
+- [ESP 4diac FORTE Component](#esp-4diac-forte-component)
 	- [Overview](#overview)
 	- [Requirements](#requirements)
 	- [Step 1. Compile FORTE to a static library](#step-1-compile-forte-to-a-static-library)
@@ -9,12 +9,13 @@
 		- [Step 1.3. Configure the compilation](#step-13-configure-the-compilation)
 		- [Step 1.5. Generate files](#step-15-generate-files)
 		- [Step 1.6. Build 4diac FORTE](#step-16-build-4diac-forte)
-	- [Step 2. Add the FORTE library to `4diac FORTE ESP32 Component` - This repository](#step-2-add-the-forte-library-to-4diac-forte-esp32-component---this-repository)
+	- [Step 2. Add the FORTE library to `ESP 4diac FORTE Component` - This repository](#step-2-add-the-forte-library-to-esp-4diac-forte-component---this-repository)
 		- [Step 2.1. Clone this repository](#step-21-clone-this-repository)
 		- [Step 2.2. Add the FORTE library](#step-22-add-the-forte-library)
 	- [Step 3. Sample FORTE application](#step-3-sample-forte-application)
 
-Refer to [4diac FORTE Esp32 Component](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) and [4diac FORTE for freeRTOS + LwIP](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html).
+Refer to [**4diac FORTE for freeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html), [**4diac FORTE Esp32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) and [
+**esp32 4diac example application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application).
 
 ## Overview
 4diac FORTE is an open source PLC runtime framework based on IEC 61499 standard. This how-to describes how to run it on esp32 or esp32s2 mcu.  For more details about 4diac FORTE please visit. https://www.eclipse.org/4diac/en_rte.php. 
@@ -181,7 +182,7 @@ Once you have changed this file, save it, close and we can try first FORTE compi
 
 * Now you can find your static library in `${FORTE_ROOT}/build/src` ~~`bin/freeRTOS/src`~~ with name `libforte-static.a`. We will use this library to prepare our ESP component so it can be used directly in the esp project. 
 
-## Step 2. Add the FORTE library to `4diac FORTE ESP32 Component` - This repository
+## Step 2. Add the FORTE library to `ESP 4diac FORTE Component` - This repository
 
 ### Step 2.1. Clone this repository
 The component is in **this** repository, you have to clone it into your `esp-idf/components` folder so it can be used in esp32 project.
