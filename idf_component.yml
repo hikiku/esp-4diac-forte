@@ -1,0 +1,5 @@
+version: "1.0.0"
+description: esp-4diac-forte
+dependencies:
+  idf:
+    version: ">=5.0"

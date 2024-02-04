@@ -1,6 +1,6 @@
-# ESP 4diac FORTE Component 
+# ESP 4diac FORTE Library 
 
-- [ESP 4diac FORTE Component](#esp-4diac-forte-component)
+- [ESP 4diac FORTE Library](#esp-4diac-forte-library)
 	- [Overview](#overview)
 	- [Requirements](#requirements)
 	- [Step 1. Compile FORTE to a static library](#step-1-compile-forte-to-a-static-library)
@@ -14,11 +14,18 @@
 		- [Step 2.2. Add the FORTE library](#step-22-add-the-forte-library)
 	- [Step 3. Sample FORTE application](#step-3-sample-forte-application)
 
-Refer to [**4diac FORTE for freeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html), [**4diac FORTE Esp32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) and [
-**esp32 4diac example application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application).
-
 ## Overview
+
+[ESP-4diac-FORTE](https://github.com/hikiku/esp-4diac-forte) is a standard [ESP-IDF](https://github.com/espressif/esp-idf) component.
+
 4diac FORTE is an open source PLC runtime framework based on IEC 61499 standard. This how-to describes how to run it on esp32 or esp32s2 mcu.  For more details about 4diac FORTE please visit. https://www.eclipse.org/4diac/en_rte.php. 
+
+Based on:
+
+- [**4diac FORTE for freeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html)
+- [**4diac FORTE Esp32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) 
+- [
+**esp32 4diac example application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application).
 
 ## Requirements
 - Linux operating system - Ubuntu / Debian / Arch.
