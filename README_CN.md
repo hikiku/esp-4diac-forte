@@ -1,147 +1,149 @@
 # ESP 4diac FORTE Library 
 
-[中文](README_CN.md)
+[English](README.md)
 
 - [ESP 4diac FORTE Library](#esp-4diac-forte-library)
-	- [Overview](#overview)
-	- [Requirements](#requirements)
-	- [Step 1. Compile 4diac FORTE to a static library](#step-1-compile-4diac-forte-to-a-static-library)
-		- [Step 1.1. Get source code](#step-11-get-source-code)
-		- [Step 1.2. Set CMake](#step-12-set-cmake)
-		- [Step 1.3. Configure the compilation](#step-13-configure-the-compilation)
-		- [Step 1.5. Generate files](#step-15-generate-files)
-		- [Step 1.6. Build 4diac FORTE](#step-16-build-4diac-forte)
-	- [Step 2. Add 4diac FORTE static library to `ESP 4diac FORTE` component](#step-2-add-4diac-forte-static-library-to-esp-4diac-forte-component)
-		- [Step 2.1. Clone this repository](#step-21-clone-this-repository)
-		- [Step 2.2. Add the FORTE library](#step-22-add-the-forte-library)
-	- [Step 3. TestApplication - A Sample 4diac FORTE application](#step-3-testapplication---a-sample-4diac-forte-application)
+	- [概述](#概述)
+	- [需求](#需求)
+	- [Step 1. 将 4diac FORTE 编译为静态库](#step-1-将-4diac-forte-编译为静态库)
+		- [Step 1.1. 获取源代码](#step-11-获取源代码)
+		- [Step 1.2. 设置 CMake](#step-12-设置-cmake)
+		- [Step 1.3. 配置编译器](#step-13-配置编译器)
+		- [Step 1.5. 生成文件](#step-15-生成文件)
+		- [Step 1.6. 构建 4diac FORTE](#step-16-构建-4diac-forte)
+	- [Step 2. 将 4diac FORTE 静态库添加到 `ESP 4diac FORTE` 组件](#step-2-将-4diac-forte-静态库添加到-esp-4diac-forte-组件)
+		- [Step 2.1. 克隆这个存储库](#step-21-克隆这个存储库)
+		- [Step 2.2. 添加 FORTE 库](#step-22-添加-forte-库)
+	- [Step 3. TestApplication - 示例 4diac FORTE 应用程序](#step-3-testapplication---示例-4diac-forte-应用程序)
 
-## Overview
+## 概述
 
-[ESP-4diac-FORTE](https://github.com/hikiku/esp-4diac-forte) is a standard [ESP-IDF](https://github.com/espressif/esp-idf) component.
+[ESP-4diac-FORTE](https://github.com/hikiku/esp-4diac-forte) 是一个标准的 [ESP-IDF](https://github.com/espressif/esp-idf) 组件。
 
-4diac FORTE is an open source PLC runtime framework based on IEC 61499 standard. This how-to describes how to run it on esp32 or esp32s2 mcu.  For more details about 4diac FORTE please visit https://www.eclipse.org/4diac/en_rte.php. 
+4diac FORTE 是一个基于 IEC 61499 标准的开源 PLC 运行时框架。 本指南介绍了如何在 esp32 或 esp32s2 MCU 上运行它。 有关 4diac FORTE 的更多详细信息，请访问 https://www.eclipse.org/4diac/en_rte.php。
 
-This library is based on:
+本库基于：
 
 - [**4diac FORTE for FreeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html)
 - [**4diac FORTE ESP32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) 
 - [**ESP32 4diac Example Application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application)
 
-## Requirements
-- Linux operating system - Ubuntu / Debian / Arch.
-- Visual Studio Code.
-- with Espressif plugin for ESP32 chips support - `Espressif IDF`, [install and setup the extension](https://github.com/espressif/vscode-esp-idf-extension/blob/HEAD/docs/tutorial/install.md).
-- ESP-IDF - should be installed by VS Code plugin.
-- Git, make, cmake and cmake-gui:
+## 需求
+- Linux 操作系统 - Ubuntu / Debian / Arch。
+- Visual Studio Code。
+- 支持 ESP32 芯片 的 Espressif 插件 - `Espressif IDF`, [安装并设置扩展](https://github.com/espressif/vscode-esp-idf-extension/blob/HEAD/docs/tutorial/install.md)。
+- ESP-IDF - 应该已通过 VS Code 插件安装。
+- Git, make, cmake 和 cmake-gui：
   	`sudo apt-get install git make cmake cmake-gui`
 
-**Also it is assumed that user has basic knowledge about C/C++ programming, esp32 platform and required toolchains.**
+**另外，假设用户具有 C/C++ 编程、ESP32 平台和所需工具链的基本知识。**
 
-It is good to test all nessecery tools before proced this instruction.
+在执行此说明之前最好先测试所有必需的工具。
 
-## Step 1. Compile 4diac FORTE to a static library
+## Step 1. 将 4diac FORTE 编译为静态库
 
-### Step 1.1. Get source code
-Clone latest 4diac FORTE repository:
+### Step 1.1. 获取源代码
+克隆最新的 4diac FORTE 存储库：
 
 ```bash
 $ git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte.git
 ```
 
-It is important to have it in some accesible place so we can easly come back to it. For propose of this text, `/home/liangz/secret/wrk/` has been used. 
+本文的工作目录是`/home/liang/secret/work/`。记住它，等下我们会多次用到它。 
 
-### Step 1.2. Set CMake
+### Step 1.2. 设置 CMake
 
-1. Open CMake-GUI
-   In next step in forte root folder create build directory and launch cmake gui tool. It can be done via terminal command
+1. 打开 CMake-GUI
+   下一步在 forte 根文件夹中，创建构建目录并启动 cmake gui 工具。 它可以通过终端命令完成
 
 	```bash
 	$ cmake-gui
 	```
 
-1. Complete as shown in the image
-   1. Set the 4diac FORTE source path where you cloned the Git repository, e.g.:`/home/liangz/secret/wrk/org.eclipse.4diac.forte`.
-   1. Set path for binaries where you want to create the library, e.g.:`/home/liangz/secret/wrk/org.eclipse.4diac.forte/build`. ~~Normally, bin/freeRTOS is used.~~
-   1. Press <kbd>Configure</kbd> and new window will appear with configuration wizard. 
+2. 完成如图所示操作
+   1. 设置 4diac FORTE 源代码路径，例如： `/home/liangz/secret/wrk/org.eclipse.4diac.forte`。
+   2. 设置你想要创建的二进制库的路径，例如：`/home/liangz/secret/wrk/org.eclipse.4diac.forte/build`。 ~~通常使用 `bin/freeRTOS`。~~
+   3. 按<kbd>Configure</kbd>，将出现带有配置向导的新窗口。
 
-   ![select path of source code and build](./docs/pics/cmake_sel_src_and_build.png) 
+   ![选择源代码路径](./docs/pics/cmake_sel_src_and_build.png) 
 
-1. In new window, select the correct option
-   1. Select the tool you normally use to compile your programs. This example follows using `UNIX Makefiles` from the list.
-   1. Select `Specify options for cross-compiling`.
-   1. Press <kbd>Next-></kbd>
+3. 在新窗口中选择正确的选项
+   1. 选择您通常用来编译程序的工具。 此示例使用列表中的 `UNIX Makefiles`。
+   2. 选择 `Specify options for cross-compiling`.
+   3. 按下 <kbd>Next-></kbd>
 
    ![](./docs/pics/cmake_wizard1.png)
 
-1. Setup for cross-compilation. You have to select GCC and G++ compilers for xtensa atchitecture
-   1. Write Operating System to **Generic** (normally freeRTOS, it won't affect the compilation)
-   1. Write Processor to **esp32** or **esp32s2**
-   1. Select the path of the C cross-compiler to **/home/liangz/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc**
-   1. Select the path of the C++ cross-compiler to **/home/liangz/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-g++**
-   1. The target root field can be left empty.
-   1. Click <kbd>Finish</kbd>
+4. 设置交叉编译。 您必须为 xtensa 架构选择 GCC 和 G++ 编译器
+   1. 在 Operating System 写入**Generic**（一般是freeRTOS，不会影响编译）
+   2. 在 Processor 写入 **esp32** 或 **esp32s2**
+   3. 选择 C 交叉编译器的路径 **/home/liangz/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc**
+   4. 选择 C++ 交叉编译器的路径 **/home/liangz/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-g++**
+   5. 目标根字段可以留空。
+   6. 按下 <kbd>Finish</kbd>
 
    ![](./docs/pics/cmake_cross_gcc_cfg.png)
 
-### Step 1.3. Configure the compilation
-A list with all variables of 4diac FORTE in red should be shown in CMake. 
+### Step 1.3. 配置编译器
+
+CMake 中应显示以红色显示 4diac FORTE 的所有变量的列表。
 ![](./docs/pics/cmake_err.png)
 
-1. For esp32 we have to set the `FORTE_ARCHITECTURE` variable to `FreeRTOSLwIP`. Now when click <kbd>Configure</kbd>, most errors should dissapear. 
+1. 对于 esp32，我们必须将 `FORTE_ARCHITECTURE` 变量设置为 `FreeRTOSLwIP`。 现在，当单击<kbd>Configure</kbd>时，大多数错误应该消失。
 ![](./docs/pics/cmake_err2.png)
-2. Check the information that appears in CMake about the LwIP configuration.
-3. The variable `FORTE_FreeRTOSLwIP_INCLUDES` should appear now and it is the most important one. You should set it to the several paths where the freeRTOS and LwIP headers are, each separated by a semicolon. For example: `${MAIN_DIRECTORY}/FreeRTOS/portable;${MAIN_DIRECTORY}/include;${MAIN_DIRECTORY}/lwip/src/include;${MAIN_DIRECTORY}/lwip/port` where `${MAIN_DIRECTORY}` is the path where you have your freeRTOS and LwIP code. When you later compile and it fails with an error saying that some "includes" are missing, this variable should be updated where the folders where the missing files are located.
-Parameter `FORTE_FreeRTOSLwIP_INCLUDES` has to be set. It takes string with semicolon separated paths to include folders in esp-idf. There is quite a lot of paths that have to be added as include paths. Below there is a working configuration, please note that all of those paths are **absolue** so you need to modify all of them. In most cases it should be enought to repleace all occurrences of `/home/liangz/esp/esp-idf` with your ESP-IDF root directory path. For example with `/home/my_user/my_projects/my-idf_path`.
+2. 检查 CMake 中显示的有关 LwIP 配置的信息。
+3. 变量 `FORTE_FreeRTOSLwIP_INCLUDES` 现在应该出现，它是最重要的一个。 您应该将其设置为 freeRTOS 和 LwIP 标头所在的多个路径，每个路径用分号分隔。 例如： `${MAIN_DIRECTORY}/FreeRTOS/portable;${MAIN_DIRECTORY}/include;${MAIN_DIRECTORY}/lwip/src/include;${MAIN_DIRECTORY}/lwip/port` 其中 `${MAIN_DIRECTORY}` 是路径 其中有 freeRTOS 和 LwIP 代码。 当您稍后编译并失败并显示错误指出缺少某些 `includes` 时，应在缺少文件所在的文件夹中更新此变量。
 
+   必须设置参数 `FORTE_FreeRTOSLwIP_INCLUDES`。 它需要用分号分隔路径的字符串来包含 esp-idf 中的文件夹。 有相当多的路径需要添加为包含路径。 下面是一个工作配置，请注意，所有这些路径都是**绝对**，因此您需要修改所有这些路径。 在大多数情况下，用 ESP-IDF 根目录路径替换所有出现的 `/home/liangz/esp/esp-idf` 就足够了。 例如使用 `/home/my_user/my_projects/my-idf_path`。
 
 	```bash
 	/home/liangz/test/blink/build/config;/home/liangz/esp/esp-idf/components/newlib/platform_include;/home/liangz/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include;/home/liangz/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include/freertos;/home/liangz/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include;/home/liangz/esp/esp-idf/components/freertos/esp_additions/include/freertos;/home/liangz/esp/esp-idf/components/freertos/esp_additions/include;/home/liangz/esp/esp-idf/components/freertos/esp_additions/arch/xtensa/include;/home/liangz/esp/esp-idf/components/esp_hw_support/include;/home/liangz/esp/esp-idf/components/esp_hw_support/include/soc;/home/liangz/esp/esp-idf/components/esp_hw_support/include/soc/esp32;/home/liangz/esp/esp-idf/components/esp_hw_support/port/esp32/.;/home/liangz/esp/esp-idf/components/esp_hw_support/port/esp32/private_include;/home/liangz/esp/esp-idf/components/heap/include;/home/liangz/esp/esp-idf/components/log/include;/home/liangz/esp/esp-idf/components/soc/include;/home/liangz/esp/esp-idf/components/soc/esp32;/home/liangz/esp/esp-idf/components/soc/esp32/include;/home/liangz/esp/esp-idf/components/hal/esp32/include;/home/liangz/esp/esp-idf/components/hal/include;/home/liangz/esp/esp-idf/components/hal/platform_port/include;/home/liangz/esp/esp-idf/components/esp_rom/include;/home/liangz/esp/esp-idf/components/esp_rom/include/esp32;/home/liangz/esp/esp-idf/components/esp_rom/esp32;/home/liangz/esp/esp-idf/components/esp_common/include;/home/liangz/esp/esp-idf/components/esp_system/include;/home/liangz/esp/esp-idf/components/esp_system/port/soc;/home/liangz/esp/esp-idf/components/esp_system/port/include/private;/home/liangz/esp/esp-idf/components/xtensa/include;/home/liangz/esp/esp-idf/components/xtensa/esp32/include;/home/liangz/esp/esp-idf/components/lwip/include;/home/liangz/esp/esp-idf/components/lwip/include/apps;/home/liangz/esp/esp-idf/components/lwip/include/apps/sntp;/home/liangz/esp/esp-idf/components/lwip/lwip/src/include;/home/liangz/esp/esp-idf/components/lwip/port/include;/home/liangz/esp/esp-idf/components/lwip/port/freertos/include;/home/liangz/esp/esp-idf/components/lwip/port/esp32xx/include;/home/liangz/esp/esp-idf/components/lwip/port/esp32xx/include/arch
 	```
 
-	**Note**: replace `/home/liangz/test/blink/build/config` with your path of `sdkconfig.h`.
+	**注意**：用你的  `sdkconfig.h` 文件所在的路径，替换 `/home/liangz/test/blink/build/config`。
 	
-<!-- -DESP_PLATFORM 
--DIDF_VER=\"v5.1.2-dirty\" 
--DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE 
--D_GNU_SOURCE 
--D_POSIX_READER_WRITER_LOCKS  -->
+	<!-- -DESP_PLATFORM 
+	-DIDF_VER=\"v5.1.2-dirty\" 
+	-DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE 
+	-D_GNU_SOURCE 
+	-D_POSIX_READER_WRITER_LOCKS  -->
 
-<!-- -mlongcalls -Wno-frame-address  -Wall -Wextra -Wwrite-strings -Wformat=2 -Wno-format-nonliteral -Wvla -Wlogical-op -Wshadow -Wformat-signedness -Wformat-overflow=2 -Wformat-truncation -Werror -Wmissing-declarations -Wmissing-prototypes -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/liangz/test/hello_world=. -fmacro-prefix-map=/home/liangz/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj -MF esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj.d -o esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj -c /home/liangz/esp/esp-idf/components/mbedtls/mbedtls/library/x509_crt.c -->
+	<!-- -mlongcalls -Wno-frame-address  -Wall -Wextra -Wwrite-strings -Wformat=2 -Wno-format-nonliteral -Wvla -Wlogical-op -Wshadow -Wformat-signedness -Wformat-overflow=2 -Wformat-truncation -Werror -Wmissing-declarations -Wmissing-prototypes -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/liangz/test/hello_world=. -fmacro-prefix-map=/home/liangz/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj -MF esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj.d -o esp-idf/mbedtls/mbedtls/library/CMakeFiles/mbedx509.dir/x509_crt.c.obj -c /home/liangz/esp/esp-idf/components/mbedtls/mbedtls/library/x509_crt.c -->
 
-4. It might be the case that you also need to set the `CMAKE_C_FLAGS` and `CMAKE_CXX_FLAGS` variables with the flags needed for your hardware. You can check which flags you need from the proeperties of your example project in your cross-IDE.
+4. 您可能还需要使用硬件所需的标志来设置 `CMAKE_C_FLAGS` 和 `CMAKE_CXX_FLAGS` 变量。 您可以从跨 IDE 中示例项目的属性中检查需要哪些标志。
 
-	Once you have filed freertos includes you have add few additional *compiler flags*. To do this you need to activate `Advanced` checkbox in upper right corner of cmake program. Once you have it, you will be able to see much more options that you can tweak.
+	一旦您提交了 freertos 包含文件，您就需要添加一些额外的*compiler flags*。 为此，您需要激活 cmake 程序右上角的 `Advanced` 复选框。 一旦你拥有它，你将能够看到更多可以调整的选项。
 
-	*Flags* that you have to add:
+    您必须添加的*Flags*：
 	`-mlongcalls -ffunction-sections -fdata-sections -fno-threadsafe-statics -fno-rtti -fno-exceptions -DconfigMINIMAL_STACK_SIZE_FORTE=15000`
 
-	All of them have to be added to all variants of `CMAKE_C_FLAGS` and `CMAKE_CXX_FLAGS`. There are: `DEBUG, MINISIZEREL RELEASE, REALWITHDEBINFO`
+	所有这些都必须添加到 `CMAKE_C_FLAGS` 和 `CMAKE_CXX_FLAGS` 的所有变体中。 有：`DEBUG、MINISIZEREL RELEASE、REALWITHDEBINFO`
 
-	It should looks similar to picture below.
+	它看起来应该类似于下图：
 
 	![](./docs/pics/cmake_flags.png)   
 
-5. Next option to set is the `FORTE_TicksPerSecond` option to **100** instead of 1000. It is also visible in advanced mode. 
-6. We also need to tell cmake that we want to build static library instead of execurable. To do this you have to set `FORTE_BUILD_EXECUTABLE` to *false/deselect* and `FORTE_BUILD_STATIC_LIBRARY` to *true/select*.
-7. For first tests, it is good to enable debug feature in FORTE so we can see more logs. That is very usefull during first run so we can see that everything works as it should. To do this, in `CMAKE_BUILD_TYPE` type: `DEBUG` and switch `FORTE_LOGLEVEL` to `LOGDEBUG`. **Unfortunetly** `FORTE_LOGLEVEL` options automaticly switch back to `NOLOG` everytime we trigger configuration, so it's  important to remember about it when we do some changes and we expect to have logs.
-<!-- 8. freeRTOS with LwIP arch needs the following flags to be defined (please do it in lwipopts.h, e.g.:`/home/liangz/esp/esp-idf/components/lwip/port/include/lwipopts.h`):
+5. 下一个要设置的选项是将 `FORTE_TicksPerSecond` 选项设置为 **100** 而不是 1000。它在 advanced 模式下也可见。
+6. 我们还需要告诉 cmake 我们想要构建静态库而不是可执行文件。 为此，您必须将 `FORTE_BUILD_EXECUTABLE` 设置为 *false/deselect* ，并将 `FORTE_BUILD_STATIC_LIBRARY` 设置为 *true/select*。
+7. 对于第一次测试，最好在 FORTE 中启用调试功能，这样我们就可以看到更多日志。 这在第一次运行时非常有用，因此我们可以看到一切都按预期运行。 为此，请在 `CMAKE_BUILD_TYPE` 中输入：`DEBUG` 并将 `FORTE_LOGLEVEL` 切换为 `LOGDEBUG`。 **不幸的是** 每次我们触发配置时，`FORTE_LOGLEVEL` 选项都会自动切换回 `NOLOG` ，因此当我们进行一些更改并且希望获得日志时，记住这一点很重要。
+<!-- 8. freeRTOS with LwIP arch needs the following flags to be defined (please do it in lwipopts.h, e.g.：`/home/liangz/esp/esp-idf/components/lwip/port/include/lwipopts.h`)：
 	```C
 	#define LWIP_COMPAT_SOCKETS 1
 	#define LWIP_IGMP 1 //to use IP_ADD_MEMBERSHIP
 	#define LWIP_TIMEVAL_PRIVATE 0 //This is optional. Set this flag if you get a compilation error about redefinition of struct timeval
 	``` -->
 
-8. Click <kbd>Configure</kbd> and the variables that need revision will appear again in red and the rest in white. ~~Check these variables and press <kbd>Configure</kbd> until no variable is shown in red. Here you can add the modules that you want FORTE to have, but from the freeRTOS point of view, there's nothing else you need.~~
+8. 单击<kbd>Configure</kbd>，需要修改的变量将再次显示为红色，其余变量显示为白色。 ~~检查这些变量并按<kbd>Configure</kbd>，直到没有变量显示为红色。 在这里你可以添加你想要 FORTE 拥有的模块，但是从 freeRTOS 的角度来看，没有其他你需要的了~~
 
-**Just to highlight changes that we have done here:**
-- `FORTE_ARCHITECTURE` set to `FreeRTOSLwIP`
-- `FORTE_FreeRTOSLwIP_INCLUDES` fillup all FreeRTOS include paths
-- `CMAKE_C_FLAGS`, `CMAKE_CXX_FLAGS` and their variations with  `DEBUG, MINISIZEREL RELEASE, REALWITHDEBINFO` - add compilers flags. 
-- `FORTE_TicksPerSecond` set to 100
-- `FORTE_BUILD_EXECUTABLE` deselect
-- `FORTE_BUILD_STATIC_LIBRARY` select
-- `CMAKE_BUILD_TYPE` type `DEBUG`, `FORTE_LOGLEVEL` set to `LOGDEBUG` 
+**汇总我们在这里所做的更改：**
+
+- `FORTE_ARCHITECTURE` 设置为 `FreeRTOSLwIP`
+- `FORTE_FreeRTOSLwIP_INCLUDES` 填入所有 FreeRTOS include 路径
+- `CMAKE_C_FLAGS`, `CMAKE_CXX_FLAGS` 和它们所有带有 `DEBUG, MINISIZEREL RELEASE, REALWITHDEBINFO` 的变体 - 添加 compilers flags
+- `FORTE_TicksPerSecond` 设置为 100
+- `FORTE_BUILD_EXECUTABLE` 取消选择
+- `FORTE_BUILD_STATIC_LIBRARY` 选中
+- `CMAKE_BUILD_TYPE` 输入 `DEBUG`, `FORTE_LOGLEVEL` 设置为 `LOGDEBUG` 
 
 
 <!-- ### Step 1.5. Comment out connect()
@@ -170,31 +172,31 @@ to
 
 Once you have changed this file, save it, close and we can try first FORTE compilation for esp32 platform. -->
 
-### Step 1.5. Generate files
+### Step 1.5. 生成文件
 
-* Click <kbd>Generate</kbd>
+* 按下 <kbd>Generate</kbd>
 
-### Step 1.6. Build 4diac FORTE
-* Go to the recently generated folder (e.g.： `${FORTE_ROOT}/build/src`) and type `make -j` your make tool should start doing all the jobs and as a result,
+### Step 1.6. 构建 4diac FORTE
+*  转到最近生成的文件夹（例如： `${FORTE_ROOT}/build/src`）并输入 `make -j`，你的 make 工具应该开始执行所有工作：
 
 	```bash
 	$ cd ${FORTE_ROOT}/build/src   # cd bin/freeRTOS
 	$ make -j
 	```
 
-* If you got an error, check again the variables in CMake, specially `FORTE_FreeRTOSLwIP_INCLUDES`, `CMAKE_C_FLAGS` and `CMAKE_CXX_FLAGS`.
+* 如果出现错误，请再次检查 CMake 中的变量，特别是 `FORTE_FreeRTOSLwIP_INCLUDES`、`CMAKE_C_FLAGS` 和 `CMAKE_CXX_FLAGS`。
 
-* If no error occurred, after some small amount of time, you should have builded FORTE static library like on the picture below: 
+* 如果没有发生错误，经过一段时间后，您应该已经构建了 FORTE 静态库，如下图所示：
 
     ![build_ok](./docs/pics/build_ok.png)
 
-* Now you can find your static library in `${FORTE_ROOT}/build/src` ~~`bin/freeRTOS/src`~~ with name `libforte-static.a`. We will use this library to prepare our ESP component so it can be used directly in the esp project. 
+* 现在你可以在 `${FORTE_ROOT}/build/src` ~~`bin/freeRTOS/src`~~ 中找到名为 `libforte-static.a` 的静态库。 我们将使用这个库来准备我们的 ESP 组件，以便它可以直接在 esp 项目中使用。
 
-## Step 2. Add 4diac FORTE static library to `ESP 4diac FORTE` component
+## Step 2. 将 4diac FORTE 静态库添加到 `ESP 4diac FORTE` 组件
 
-### Step 2.1. Clone this repository
+### Step 2.1. 克隆这个存储库
 
-Go to your working directory and type:
+转到您的工作目录并输入：
 
 ```bash
 $ cd <your-working-directory>
@@ -203,15 +205,15 @@ $ git clone https://github.com/hikiku/esp-4diac-forte.git
 
 <!-- $ cd /home/liangz/secret/wrk -->
 
-### Step 2.2. Add the FORTE library
+### Step 2.2. 添加 FORTE 库
 
-At this moment you can copy you static library to the FORTE component folder.
+此时您可以将静态库复制到 FORTE 组件文件夹中。
 
-It's good to make a symbolic link instead of hard copy of static library. To do this you can use ln command in your shell.  
+最好创建一个符号链接而不是静态库的硬拷贝。 为此，您可以在 shell 中使用 `ln` 命令。
 
 `ln -s [soruce file] [destination file]`
 
-for example:
+例如：
 
 ```bash
 $ cd <your-working-directory>/esp32-4diac-forte/lib/esp32/src
@@ -227,36 +229,34 @@ $ ln -s /home/liangz/secret/wrk/org.eclipse.4diac.forte/build/src/libforte-stati
 
 <!-- `ln -s /home/liangz/secret/wrk/org.eclipse.4diac.forte/build/src/libforte-static.a /home/liangz/esp/esp-idf/components/4diac-forte-esp32-component/forte.a` -->
 
-In this way you don't have to copy the library everytime you rebuild it. 
+这样您就不必每次重建库时都复制它。
 
+## Step 3. TestApplication - 示例 4diac FORTE 应用程序
 
-## Step 3. TestApplication - A Sample 4diac FORTE application 
-
-To test you FORTE buld, you need eighter prepare your sample aplication from scratch or use the one that has been already prepared. This how-to will not cover how to make new project from scratch, instead we will use here an already prepared example - `<your_working_dicrotry>/esp-4diac-forte/test_apps/TestApplication/`. 
+要测试您的 FORTE buld，您需要从头开始准备示例应用程序或使用已经准备好的示例应用程序。 本指南不会介绍如何从头开始创建新项目，而是我们将在此处使用一个已经准备好的示例 - `<your_working_dicrotry>/esp-4diac-forte/test_apps/TestApplication/`。
 
 <!-- Clone the git repository 
-
 ```bash
 $ git clone https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application.git
 ```
 -->
 
-Open your Visual Studio Code, and load this 4diac FORTE example application project. 
+打开 Visual Studio Code，然后加载此 4diac FORTE 示例应用程序项目。
 
-If you have everything properly installed project should build without any issues. Once you build it, flash and turn on ESP-IDF Monitor device. 
+如果一切都正确安装，项目应该可以毫无问题地构建。 构建完成后，刷新并打开 ESP-IDF 监视设备。
 
-Once it's done you should see your 4diac FORTE up and running. 
+完成后，您应该会看到 4diac FORTE 已启动并正在运行。
 
 * <kbd>CTRL</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> -> `ESP-IDF:>Set Espressif device target`
 
-* (Optional) Configure your SPI Flash: <kbd>CTRL</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> -> `ESP-IDF:>SDK Configuration Editor (menuconfig)`:
+* (可选) 配置你的 SPI Flash： <kbd>CTRL</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> -> `ESP-IDF:>SDK Configuration Editor (menuconfig)`：
 	```menuconfig
 	Serial flasher config
 		-> Flash SPI speed (40 MHz)
 		-> Flash size (4 MB)
 	```
 
-* (Optional) Edit your partion file of SPI flash - `partion.csv`:
+* (可选) 修改你的 SPI flash 分区表 - `partion.csv`：
 
 	```csv
 	# Name,   Type, SubType, Offset,  Size, Flags
@@ -388,6 +388,6 @@ Once it's done you should see your 4diac FORTE up and running.
 	I (3243) main_task: Returned from app_main()
 	```
 
-Now you can deploy your sample application. To build your sample application with FORTE please refer to FORTE documentation : [Step 1 - Use 4diac Locally (Blinking Tutorial)]( https://www.eclipse.org/4diac/en_help.php?helppage=html/4diacIDE/use4diacLocally.html")
+现在您可以部署示例应用程序。要使用 FORTE 构建示例应用程序，请参阅 FORTE 文档：[Step 1 - Use 4diac Locally (Blinking Tutorial)]( https://www.eclipse.org/4diac/en_help.php?helppage=html/4diacIDE/use4diacLocally.html")。
 
-If everything is done correctly you should succesfully deploy your application. Enjoy!
+如果一切都正确完成，您应该成功部署您的应用程序。Enjoy!
