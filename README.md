@@ -3,13 +3,13 @@
 - [ESP 4diac FORTE Library](#esp-4diac-forte-library)
 	- [Overview](#overview)
 	- [Requirements](#requirements)
-	- [Step 1. Compile FORTE to a static library](#step-1-compile-forte-to-a-static-library)
+	- [Step 1. Compile 4diac FORTE to a static library](#step-1-compile-4diac-forte-to-a-static-library)
 		- [Step 1.1. Get source code](#step-11-get-source-code)
 		- [Step 1.2. Set CMake](#step-12-set-cmake)
 		- [Step 1.3. Configure the compilation](#step-13-configure-the-compilation)
 		- [Step 1.5. Generate files](#step-15-generate-files)
 		- [Step 1.6. Build 4diac FORTE](#step-16-build-4diac-forte)
-	- [Step 2. Add the FORTE library to `ESP 4diac FORTE Component` - This repository](#step-2-add-the-forte-library-to-esp-4diac-forte-component---this-repository)
+	- [Step 2. Add 4diac FORTE static library to `ESP 4diac FORTE` component](#step-2-add-4diac-forte-static-library-to-esp-4diac-forte-component)
 		- [Step 2.1. Clone this repository](#step-21-clone-this-repository)
 		- [Step 2.2. Add the FORTE library](#step-22-add-the-forte-library)
 	- [Step 3. Sample FORTE application](#step-3-sample-forte-application)
@@ -22,10 +22,9 @@
 
 Based on:
 
-- [**4diac FORTE for freeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html)
-- [**4diac FORTE Esp32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) 
-- [
-**esp32 4diac example application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application).
+- [**4diac FORTE for FreeRTOS + LwIP**](https://eclipse.dev/4diac/en_help.php?helppage=html/installation/freeRTOSLwIP.html)
+- [**4diac FORTE ESP32 Component**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component) 
+- [**ESP32 4diac Example Application**](https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/esp32-4diac-example-application).
 
 ## Requirements
 - Linux operating system - Ubuntu / Debian / Arch.
@@ -39,7 +38,7 @@ Based on:
 
 It is good to test all nessecery tools before proced this instruction.
 
-## Step 1. Compile FORTE to a static library
+## Step 1. Compile 4diac FORTE to a static library
 
 ### Step 1.1. Get source code
 Clone latest 4diac FORTE repository:
@@ -48,7 +47,7 @@ Clone latest 4diac FORTE repository:
 $ git clone https://git.eclipse.org/r/4diac/org.eclipse.4diac.forte.git
 ```
 
-It is important to have it in some accesible place so we can easly come back to it. For propose of this text, `/home/liangz/Secret/wrk/` has been used. 
+It is important to have it in some accesible place so we can easly come back to it. For propose of this text, `/home/liangz/secret/wrk/` has been used. 
 
 ### Step 1.2. Set CMake
 
@@ -60,8 +59,8 @@ It is important to have it in some accesible place so we can easly come back to 
 	```
 
 1. Complete as shown in the image
-   1. Set the 4diac FORTE source path where you cloned the Git repository, e.g.:`/home/liangz/Secret/wrk/org.eclipse.4diac.forte`.
-   1. Set path for binaries where you want to create the library, e.g.:`/home/liangz/Secret/wrk/org.eclipse.4diac.forte/build`. ~~Normally, bin/freeRTOS is used.~~
+   1. Set the 4diac FORTE source path where you cloned the Git repository, e.g.:`/home/liangz/secret/wrk/org.eclipse.4diac.forte`.
+   1. Set path for binaries where you want to create the library, e.g.:`/home/liangz/secret/wrk/org.eclipse.4diac.forte/build`. ~~Normally, bin/freeRTOS is used.~~
    1. Press <kbd>Configure</kbd> and new window will appear with configuration wizard. 
 
    ![select path of source code and build](./docs/pics/cmake_sel_src_and_build.png) 
@@ -189,30 +188,42 @@ Once you have changed this file, save it, close and we can try first FORTE compi
 
 * Now you can find your static library in `${FORTE_ROOT}/build/src` ~~`bin/freeRTOS/src`~~ with name `libforte-static.a`. We will use this library to prepare our ESP component so it can be used directly in the esp project. 
 
-## Step 2. Add the FORTE library to `ESP 4diac FORTE Component` - This repository
+## Step 2. Add 4diac FORTE static library to `ESP 4diac FORTE` component
 
 ### Step 2.1. Clone this repository
-The component is in **this** repository, you have to clone it into your `esp-idf/components` folder so it can be used in esp32 project.
 
-Go to `esp-idf/components` folder and type:
+Go to your working directory and type:
 
-`$ git clone https://gitlab.com/meisterschulen-am-ostbahnhof-munchen/4diac-forte-esp32-component.git`
+```bash
+$ cd <your-working-directory>
+$ git clone https://github.com/hikiku/esp-4diac-forte.git
+```
+
+<!-- $ cd /home/liangz/secret/wrk -->
 
 ### Step 2.2. Add the FORTE library
 
-At this moment you can copy you static library to the FORTE component folder. ~~There is also need to rename it to forte.a.~~ It's good to make a symbolic link instead of hard copy of static library. To do this you can use ln command in your shell.  
+At this moment you can copy you static library to the FORTE component folder.
+
+It's good to make a symbolic link instead of hard copy of static library. To do this you can use ln command in your shell.  
 
 `ln -s [soruce file] [destination file]`
 
 for example:
 
-~~`ln -s /home/liangz/Secret/wrk/org.eclipse.4diac.forte/build/src/libforte-static.a /home/liangz/esp/esp-idf/components/4diac-forte-esp32-component/forte.a`~~
-
 ```bash
-cd /home/liangz/test/esp32-4diac-example-application/Application/components/4diac-forte-esp32-component/lib/esp32/src
-mv libforte-static.a libforte-static.a.origin     # rf libforte-static.a
-ln -s /home/liangz/Secret/wrk/org.eclipse.4diac.forte/build/src/libforte-static.a libforte-static.a
+$ cd <your-working-directory>/esp32-4diac-forte/lib/esp32/src
+$ mv libforte-static.a libforte-static.a.origin
+$ ln -s <your-working-directory>/org.eclipse.4diac.forte/build/src/libforte-static.a libforte-static.a
 ```
+
+<!--
+$ cd /home/liangz/secret/wrk/esp32-4diac-forte/lib/esp32/src
+$ mv libforte-static.a libforte-static.a.origin
+$ ln -s /home/liangz/secret/wrk/org.eclipse.4diac.forte/build/src/libforte-static.a libforte-static.a
+-->
+
+<!-- `ln -s /home/liangz/secret/wrk/org.eclipse.4diac.forte/build/src/libforte-static.a /home/liangz/esp/esp-idf/components/4diac-forte-esp32-component/forte.a` -->
 
 In this way you don't have to copy the library everytime you rebuild it. 
 
