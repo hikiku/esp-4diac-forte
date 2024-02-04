@@ -1,0 +1,20 @@
+menu "Network_softAP"
+
+    config ESP_WIFI_AP_PASSWORD
+        string "SoftAP Password"
+        default "esp32_pwd"
+        help
+            WiFi password (WPA or WPA2) for the example to use for the softAP.
+    config ESP_WIFI_AP_CHANNEL
+        int "WiFi Channel"
+        range 1 13
+        default 1
+        help
+            WiFi channel (network channel) for the example to use.
+
+    config ESP_MAX_STA_CONN
+        int "Maximal STA connections"
+        default 4
+        help
+            Max number of the STA connects to AP.
+endmenu
